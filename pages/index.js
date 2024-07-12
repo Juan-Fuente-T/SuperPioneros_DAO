@@ -36,10 +36,7 @@ export default function Home() {
   const [nftUserBalance, setNftUserBalance] = useState(null);
   // State variable to store the previous user's balance of SuperPioneros NFT
   const [prevNftBalanceState, setPrevNftBalanceState] = useState(null); // Initial state
-  const [proposalCreated, setProposalCreated] = useState(false);
-  const [voteCast, setVoteCast] = useState(false);
-  // const [proposalDeleted, setProsalDeleted] = useState(false);
-  const [proposalExecuted, setProposalExecuted] = useState(false);
+
   
   // Fetch the owner of the DAO
   const daoOwner = useContractRead({
@@ -71,9 +68,10 @@ export default function Home() {
     functionName: "balanceOf",
     args: [address],
   });
-  // console.log("UserBalance", nftBalanceOfUser?.data);
-  // console.log("nftBalanceOfUserData", nftBalanceOfUser.data);
+  console.log("XXXXUserBalance", nftBalanceOfUser?.data);
   
+  /*console.log("nftBalanceOfUser", nftBalanceOfUser);
+  console.log("nftBalanceOfUserData", nftBalanceOfUser.data);*/
   // Piece of code that runs everytime the value of `selectedTab` or `nftBalanceOfUser` changes
   // Used to re-fetch all proposals in the DAO when user switches
   // to the 'View Proposals' tab
@@ -93,20 +91,11 @@ export default function Home() {
       // }
     setIsMounted(true);
 
-//     // Only fetch proposals when the tab changes or nftBalance changes
-//   if (selectedTab === "Ver Propuestas") {
-//     fetchAllProposals();
-//   }
-// }, [selectedTab, nftUserBalance]); // Dependency array
-// Fetch proposals when the tab changes or a proposal-related event occurs
-    if (selectedTab === "Ver Propuestas") {
-      fetchAllProposals();
-    }
-    // Reset event flags after fetching
-    setProposalCreated(false);
-    setVoteCast(false);
-    setProposalExecuted(false);
-}, [selectedTab, proposalCreated, voteCast, proposalExecuted]);
+    // Only fetch proposals when the tab changes or nftBalance changes
+  if (selectedTab === "Ver Propuestas") {
+    fetchAllProposals();
+  }
+}, [selectedTab, nftUserBalance]); // Dependency array
 
   // Function to make a createProposal transaction in the DAO
   async function createProposal() {
@@ -132,7 +121,6 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
-    setProposalCreated(true);
   }
 
   // Function to fetch a proposal by it's ID
@@ -201,7 +189,6 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
-    setVoteCast(true);
   }
 
   // Function to execute a proposal after deadline has been exceeded
@@ -221,7 +208,6 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
-    setProposalExecuted(true);
   }
 
   // Function to withdraw ether from the DAO contract
@@ -255,9 +241,9 @@ export default function Home() {
 
   // Renders the 'Create Proposal' tab content
   function renderCreateProposalTab() {
-    // console.log("UserBALANCE", nftUserBalance);
+    console.log("CreateProp",styles);
+    console.log("UserBALANCE", nftUserBalance);
     // if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
-    // if (nftUserBalance === 0 || nftUserBalance === undefined ) {
     //   alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
     //   return null;
     // }
@@ -298,7 +284,8 @@ export default function Home() {
 
   // Renders the 'View Proposals' tab content
   function renderViewProposalsTab() {
-    // console.log("ViewStyles",styles);
+    console.log("ViewProp",styles);
+    console.log("renderCONTROL");
     const hasNft = nftUserBalance !== null && nftUserBalance > 0;
 
     if (loading) {
@@ -332,7 +319,7 @@ export default function Home() {
               <p className={styles.proposalDetail}>Deadline: {p.deadline.toLocaleString()}</p>
               <p className={styles.proposalDetail}>Votos Si: {p.yayVotes}</p>
               <p className={styles.proposalDetail}>Votos No: {p.nayVotes}</p>
-              {/* <p>Ejecutada?: {p.executed.toString()}</p>  */}
+              {/* <p>Ejecutada?: {p.executed.toString()}</p> */}
               {p.deadline.getTime() > Date.now() && !p.executed ? (
                 <div className={styles.flex}>
                   <button
@@ -408,11 +395,21 @@ export default function Home() {
    <>
   
 
-      <Head>
+      <head>
         <title>Super Pioneros DAO</title>
         <meta name="description" content="SuperPioneros DAO" />
         <link rel="icon" href="/favicon.ico" />
-      </Head>
+        {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+          />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+          rel="stylesheet"
+          /> */}
+      </head>
      
         <main>
           <div className={styles.initialLogo}>
