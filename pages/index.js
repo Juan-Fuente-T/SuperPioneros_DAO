@@ -68,10 +68,9 @@ export default function Home() {
     functionName: "balanceOf",
     args: [address],
   });
-  console.log("XXXXUserBalance", nftBalanceOfUser?.data);
+  // console.log("UserBalance", nftBalanceOfUser?.data);
+  // console.log("nftBalanceOfUserData", nftBalanceOfUser.data);
   
-  /*console.log("nftBalanceOfUser", nftBalanceOfUser);
-  console.log("nftBalanceOfUserData", nftBalanceOfUser.data);*/
   // Piece of code that runs everytime the value of `selectedTab` or `nftBalanceOfUser` changes
   // Used to re-fetch all proposals in the DAO when user switches
   // to the 'View Proposals' tab
@@ -241,12 +240,11 @@ export default function Home() {
 
   // Renders the 'Create Proposal' tab content
   function renderCreateProposalTab() {
-    console.log("CreateProp",styles);
-    console.log("UserBALANCE", nftUserBalance);
-    // if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
-    //   alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
-    //   return null;
-    // }
+    // console.log("UserBALANCE", nftUserBalance);
+    if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
+      alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
+      return null;
+    }
     if (loading) {
       return (
         <div className={styles.description}>
@@ -284,8 +282,7 @@ export default function Home() {
 
   // Renders the 'View Proposals' tab content
   function renderViewProposalsTab() {
-    console.log("ViewProp",styles);
-    console.log("renderCONTROL");
+    // console.log("ViewStyles",styles);
     const hasNft = nftUserBalance !== null && nftUserBalance > 0;
 
     if (loading) {
@@ -319,7 +316,7 @@ export default function Home() {
               <p className={styles.proposalDetail}>Deadline: {p.deadline.toLocaleString()}</p>
               <p className={styles.proposalDetail}>Votos Si: {p.yayVotes}</p>
               <p className={styles.proposalDetail}>Votos No: {p.nayVotes}</p>
-              {/* <p>Ejecutada?: {p.executed.toString()}</p> */}
+              {/* <p>Ejecutada?: {p.executed.toString()}</p>  */}
               {p.deadline.getTime() > Date.now() && !p.executed ? (
                 <div className={styles.flex}>
                   <button
@@ -395,21 +392,11 @@ export default function Home() {
    <>
   
 
-      <head>
+      <Head>
         <title>Super Pioneros DAO</title>
         <meta name="description" content="SuperPioneros DAO" />
         <link rel="icon" href="/favicon.ico" />
-        {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="true"
-          />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
-          rel="stylesheet"
-          /> */}
-      </head>
+      </Head>
      
         <main>
           <div className={styles.initialLogo}>
