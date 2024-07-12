@@ -36,7 +36,10 @@ export default function Home() {
   const [nftUserBalance, setNftUserBalance] = useState(null);
   // State variable to store the previous user's balance of SuperPioneros NFT
   const [prevNftBalanceState, setPrevNftBalanceState] = useState(null); // Initial state
-
+  const [proposalCreated, setProposalCreated] = useState(false);
+  const [voteCast, setVoteCast] = useState(false);
+  // const [proposalDeleted, setProsalDeleted] = useState(false);
+  const [proposalExecuted, setProposalExecuted] = useState(false);
   
   // Fetch the owner of the DAO
   const daoOwner = useContractRead({
@@ -90,11 +93,21 @@ export default function Home() {
       // }
     setIsMounted(true);
 
-    // Only fetch proposals when the tab changes or nftBalance changes
-  if (selectedTab === "Ver Propuestas") {
-    fetchAllProposals();
-  }
-}, [selectedTab, nftUserBalance]); // Dependency array
+//     // Only fetch proposals when the tab changes or nftBalance changes
+//   if (selectedTab === "Ver Propuestas") {
+//     fetchAllProposals();
+//   }
+// }, [selectedTab, nftUserBalance]); // Dependency array
+// Fetch proposals when the tab changes or a proposal-related event occurs
+if (selectedTab === "Ver Propuestas" || proposalCreated || proposalDeleted || voteCast || proposalExecuted) {
+  fetchAllProposals();
+
+  // Reset event flags after fetching
+  setProposalCreated(false);
+  setVoteCast(false);
+  setProposalExecuted(false);
+}
+}, [selectedTab, proposalCreated, proposalDeleted, voteCast, proposalExecuted]);
 
   // Function to make a createProposal transaction in the DAO
   async function createProposal() {
@@ -120,6 +133,7 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
+    setProposalCreated(true);
   }
 
   // Function to fetch a proposal by it's ID
@@ -188,6 +202,7 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
+    setVoteCast(true);
   }
 
   // Function to execute a proposal after deadline has been exceeded
@@ -207,6 +222,7 @@ export default function Home() {
       window.alert(error);
     }
     setLoading(false);
+    setProposalExecuted(true);
   }
 
   // Function to withdraw ether from the DAO contract
@@ -241,10 +257,11 @@ export default function Home() {
   // Renders the 'Create Proposal' tab content
   function renderCreateProposalTab() {
     // console.log("UserBALANCE", nftUserBalance);
-    if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
-      alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
-      return null;
-    }
+    // if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
+    // if (nftUserBalance === 0 || nftUserBalance === undefined ) {
+    //   alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
+    //   return null;
+    // }
     if (loading) {
       return (
         <div className={styles.description}>
