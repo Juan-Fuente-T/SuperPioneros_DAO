@@ -99,15 +99,14 @@ export default function Home() {
 //   }
 // }, [selectedTab, nftUserBalance]); // Dependency array
 // Fetch proposals when the tab changes or a proposal-related event occurs
-if (selectedTab === "Ver Propuestas" || proposalCreated || proposalDeleted || voteCast || proposalExecuted) {
-  fetchAllProposals();
-
-  // Reset event flags after fetching
-  setProposalCreated(false);
-  setVoteCast(false);
-  setProposalExecuted(false);
-}
-}, [selectedTab, proposalCreated, proposalDeleted, voteCast, proposalExecuted]);
+    if (selectedTab === "Ver Propuestas") {
+      fetchAllProposals();
+    }
+    // Reset event flags after fetching
+    setProposalCreated(false);
+    setVoteCast(false);
+    setProposalExecuted(false);
+}, [selectedTab, proposalCreated, voteCast, proposalExecuted]);
 
   // Function to make a createProposal transaction in the DAO
   async function createProposal() {
