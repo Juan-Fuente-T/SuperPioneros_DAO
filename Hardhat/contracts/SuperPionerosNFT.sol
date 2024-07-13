@@ -12,3 +12,4 @@ contract SuperPionerosNFT is ERC721Enumerable {
         _safeMint(msg.sender, totalSupply());
     }
 }
+
