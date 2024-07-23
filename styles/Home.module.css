@@ -15,6 +15,9 @@
 .card {
   font-family: "Audiowide", Verdana, Geneva, Tahoma, sans-serif;
 }
+.descriptions {
+  background-color: rgba(255, 255, 255, 0.2); /* Blanco translúcido */
+}
 .main {
   font-family: Audiowide, Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
@@ -40,7 +43,7 @@
 
 .initial_logo_image {
   justify-content: center;
-  width: 50%;
+  width: 35%;
 }
 
 .main > div {
@@ -350,6 +353,13 @@
   padding-bottom: 5%;
   color: #006da6;
 }
+.initialTitle {
+  font-size: 2.5vw;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 5%;
+  color: #006da6;
+}
 
 /* .imageContainer {
   display: flex;
@@ -402,6 +412,40 @@
     transparent
     ); */
 }
+#backgroundDown {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  /* width: 100%;
+  height: 100%; */
+  /* background-color: #006da6; */
+  z-index: -1;
+  width: 50%;
+  opacity: 0.2;
+}
+#backgroundUp {
+  position: absolute;
+  top: -10%;
+  left: 0px;
+  /* width: 100%;
+  height: 100%; */
+  /* background-color: #006da6; */
+  z-index: -1;
+  width: 50%;
+  opacity: 0.1;
+}
+#backgroundUp2 {
+  position: absolute;
+  top: -10%;
+  right: 0px;
+  /* width: 100%;
+  height: 100%; */
+  /* background-color: #006da6; */
+  z-index: -1;
+  width: 50%;
+  opacity: 0.1;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -460,7 +504,7 @@
     margin: 4%;
   }
   .title {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .description_info {
     max-width: 90%;

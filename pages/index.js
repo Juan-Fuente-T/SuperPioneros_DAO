@@ -390,15 +390,17 @@ export default function Home() {
 
   if (!isConnected)
     return (
-      <div>
+  <div>
         <ConnectButton />
+        <img id={styles.backgroundUp} src="./SuperPIoneros_fondoUp.png" />
         <div className={styles.initial_container}>
           <img
             className={styles.initial_logo_image}
-            src="./SuperPionerosLogo.png"
+            src="./SuperPionerosLogo.png" alt="SuperPionero's Community DAO logo"
           />
           <h1 className={styles.initialTitle}>Super Pioneros DAO</h1>
           <p className={styles.initialText}>Conecta tu wallet</p>
+          <img id={styles.backgroundUp2} src="./SuperPIoneros_fondoUp2.png" />
           <ConnectButton />
         </div>
       </div>
@@ -415,17 +417,19 @@ export default function Home() {
       </Head>
      
         <main>
+            <img id={styles.backgroundUp} src="./SuperPIoneros_fondoUp.png" />
           <div className={styles.initialLogo}>
-            <img src="./SuperPionerosLogo.png" />
+            <img src="./SuperPionerosLogo.png" alt="SuperPionero's Community DAO logo" />
           </div>
           <div className={styles.general_container}>
-            <img className={styles.initialImage} src="./superpioneros.png" />
+            <img className={styles.initialImage} src="./superpioneros.png" alt="Bust of a inteligent robot in Superpioneros"/>
             <h1 className={styles.title}>
               Super Pioneros <br></br> DAO
             </h1>
           </div>
 
           <div className={styles.image_container}>
+            <img id={styles.backgroundDown} src="./SuperPIoneros_fondoDown.png" />
             <div className={styles.descriptions}>
               <h2>Bienvenido a nuestra DAO!</h2>
               <h3>
@@ -447,7 +451,7 @@ export default function Home() {
               </p>
               <p>
                 Numero total de Propuestas:{" "}
-                {numOfProposalsInDAO?.data.toString()}
+                {numOfProposalsInDAO?.data?.toString()}
               </p>
             </div>
           </div>
