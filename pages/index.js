@@ -421,6 +421,7 @@ export default function Home() {
           <div className={styles.initialLogo}>
             <img src="./SuperPionerosLogo.png" alt="SuperPionero's Community DAO logo" />
           </div>
+            <img id={styles.backgroundUp2} src="./SuperPIoneros_fondoUp2.png" />
           <div className={styles.general_container}>
             <img className={styles.initialImage} src="./superpioneros.png" alt="Bust of a inteligent robot in Superpioneros"/>
             <h1 className={styles.title}>
