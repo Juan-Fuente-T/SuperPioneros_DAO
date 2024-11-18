@@ -445,6 +445,9 @@
   width: 50%;
   opacity: 0.1;
 }
+.ext_container {
+  margin: 10px;
+}
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {

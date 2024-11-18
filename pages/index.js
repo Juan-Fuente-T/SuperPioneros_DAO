@@ -63,16 +63,18 @@ export default function Home() {
   /*console.log("ADDRESS", SuperPionerosDAOAddress);
   console.log("AbiDAO", SuperPionerosDAOABI);
   console.log("AbiNFT", SuperPionerosNFTABI);*/
-
-  // Fetch the SuperPioneros NFT balance of the user
-  const nftBalanceOfUser = useContractRead({
-    abi: SuperPionerosNFTABI,
-    address: SuperPionerosNFTAddress,
-    functionName: "balanceOf",
-    args: [address],
-  });
+  let nftBalanceOfUser;
+  if(address){
+    // Fetch the SuperPioneros NFT balance of the user
+    nftBalanceOfUser = useContractRead({
+      abi: SuperPionerosNFTABI,
+      address: SuperPionerosNFTAddress,
+      functionName: "balanceOf",
+      args: [address],
+    });
+  }
   // console.log("UserBalance", nftBalanceOfUser?.data);
-  // console.log("nftBalanceOfUserData", nftBalanceOfUser.data);
+  // console.log("nftBalanceOfUserData", nftBalanceOfUser?.data);
   
   // Piece of code that runs everytime the value of `selectedTab` or `nftBalanceOfUser` changes
   // Used to re-fetch all proposals in the DAO when user switches
@@ -81,15 +83,15 @@ export default function Home() {
     // if (selectedTab === "View Proposals" && nftBalanceOfUser) {
     //   fetchAllProposals();
     //   }
-    const currentNftBalance = nftBalanceOfUser ? parseInt(nftBalanceOfUser.data?.toString()) : null;
-  setNftUserBalance(currentNftBalance);
+    const currentNftBalance = nftBalanceOfUser ? parseInt(nftBalanceOfUser?.data?.toString()) : null;
+    setNftUserBalance(currentNftBalance);
   // Update ref
-    // if (nftBalanceOfUser !== undefined && nftBalanceOfUser.data !== undefined) {
+    // if (nftBalanceOfUser !== undefined && nftBalanceOfUser?.data !== undefined) {
       // if (nftBalanceOfUser?.data !== undefined && nftUserBalance === null) {  
-      //    setNftUserBalance(parseInt(nftBalanceOfUser.data.toString()));
+      //    setNftUserBalance(parseInt(nftBalanceOfUser.?data.toString()));
       // }
       // if (nftBalanceOfUser?.data !== undefined) {
-      //   setNftUserBalance(parseInt(nftBalanceOfUser.data.toString()));
+      //   setNftUserBalance(parseInt(nftBalanceOfUser?.data?.toString()));
       // }
     setIsMounted(true);
 
@@ -111,7 +113,7 @@ export default function Home() {
   // Function to make a createProposal transaction in the DAO
   async function createProposal() {
     console.log("Description: ", description);
-    if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
+    if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser?.data?.toString()) === 0) {
       alert("Lo siento, no eres poseedor del NFT y no puedes crear propuestas")
       return;
     }
@@ -171,7 +173,7 @@ export default function Home() {
     try {
       const proposals = [];
 
-      for (let i = 0; i < numOfProposalsInDAO.data; i++) {
+      for (let i = 0; i < numOfProposalsInDAO?.data; i++) {
         const proposal = await fetchProposalById(i);
         proposals.push(proposal);
       }
@@ -256,7 +258,7 @@ export default function Home() {
   // Renders the 'Create Proposal' tab content
   function renderCreateProposalTab() {
     // console.log("UserBALANCE", nftUserBalance);
-    // if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser.data.toString()) === 0) {
+    // if (nftUserBalance === 0 || nftUserBalance === undefined || parseInt(nftBalanceOfUser?.data?.toString()) === 0) {
     // if (nftUserBalance === 0 || nftUserBalance === undefined ) {
     //   alert("Los siento, no eres poseedor del NFT y no puedes crear propuestas");
     //   return null;
@@ -267,7 +269,7 @@ export default function Home() {
           <p>Cargando... Esperando a la transacción...</p>
         </div>
       );
-    } else if (nftUserBalance === 0 || nftUserBalance === null || parseInt(nftBalanceOfUser.data.toString()) === 0 || nftBalanceOfUser.data === undefined) {
+    } else if (nftUserBalance === 0 || nftUserBalance === null || parseInt(nftBalanceOfUser?.data?.toString()) === 0 || nftBalanceOfUser?.data === undefined) {
       return (
         <div className={styles.description}>
           <p>No posees el NFT SuperPionero. <br />
@@ -379,18 +381,18 @@ export default function Home() {
   // }, [selectedTab]);
 
   // useEffect(() => {
-  //   if (nftBalanceOfUser.data) {
-  //     setNftUserBalance(nftBalanceOfUser.data);
+  //   if (nftBalanceOfUser?.data) {
+  //     setNftUserBalance(nftBalanceOfUser?.data);
   //   }
   //   setIsMounted(true);
-  // }, [nftBalanceOfUser.data]);
+  // }, [nftBalanceOfUser?.data]);
   
 
   if (!isMounted) return null;
 
   if (!isConnected)
     return (
-  <div>
+  <div className={styles.ext_container}>
         <ConnectButton />
         <img id={styles.backgroundUp} src="./SuperPIoneros_fondoUp.png" />
         <div className={styles.initial_container}>
@@ -447,7 +449,7 @@ export default function Home() {
             <div className={styles.description_info}>
               {/*Falla esta clase primer_p y el id prueba, no la esta cogiendo*/}
               <p id="prueba" className={styles.primer_p}>
-                Eres poseedor de {nftBalanceOfUser.data?.toString()}{" "}
+                Eres poseedor de {nftBalanceOfUser?.data?.toString()}{" "}
                 SuperPioneros NFT{" "}
               </p>
               <p>
@@ -472,7 +474,7 @@ export default function Home() {
           </div>
           {renderTabs()}
           {/* Display additional withdraw button if connected wallet is owner */}
-          {address && address.toLowerCase() === daoOwner.data.toLowerCase() ? (
+          {address && address?.toLowerCase() === daoOwner?.data?.toLowerCase() ? (
             <div className={styles.withdraw_button_container}>
               {loading ? (
                 <button className={styles.button}>Loading...</button>
