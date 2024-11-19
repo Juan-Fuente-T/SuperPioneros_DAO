@@ -40,7 +40,8 @@ export default function Home() {
   const [voteCast, setVoteCast] = useState(false);
   // const [proposalDeleted, setProsalDeleted] = useState(false);
   const [proposalExecuted, setProposalExecuted] = useState(false);
-  
+
+
   // Fetch the owner of the DAO
   const daoOwner = useContractRead({
     abi: SuperPionerosDAOABI,
@@ -60,21 +61,15 @@ export default function Home() {
     functionName: "numProposals",
   });
   
-  /*console.log("ADDRESS", SuperPionerosDAOAddress);
-  console.log("AbiDAO", SuperPionerosDAOABI);
-  console.log("AbiNFT", SuperPionerosNFTABI);*/
-  let nftBalanceOfUser;
-  if(address){
-    // Fetch the SuperPioneros NFT balance of the user
-    nftBalanceOfUser = useContractRead({
-      abi: SuperPionerosNFTABI,
-      address: SuperPionerosNFTAddress,
-      functionName: "balanceOf",
-      args: [address],
-    });
-  }
-  // console.log("UserBalance", nftBalanceOfUser?.data);
-  // console.log("nftBalanceOfUserData", nftBalanceOfUser?.data);
+  // Fetch the SuperPioneros NFT balance of the user
+  const nftBalanceOfUser = useContractRead({
+    abi: SuperPionerosNFTABI,
+    address: SuperPionerosNFTAddress,
+    functionName: "balanceOf",
+    args: [address],
+    enabled: Boolean(address), // Solo se ejecuta si 'address' es válido
+  });
+
   
   // Piece of code that runs everytime the value of `selectedTab` or `nftBalanceOfUser` changes
   // Used to re-fetch all proposals in the DAO when user switches
@@ -83,8 +78,12 @@ export default function Home() {
     // if (selectedTab === "View Proposals" && nftBalanceOfUser) {
     //   fetchAllProposals();
     //   }
-    const currentNftBalance = nftBalanceOfUser ? parseInt(nftBalanceOfUser?.data?.toString()) : null;
-    setNftUserBalance(currentNftBalance);
+    // const currentNftBalance = nftBalanceOfUser ? parseInt(nftBalanceOfUser?.data?.toString()) : null;
+    // setNftUserBalance(currentNftBalance);
+    if (nftBalanceOfUser?.data !== undefined && nftBalanceOfUser?.data !== null) {
+      const currentNftBalance = parseInt(nftBalanceOfUser.data.toString());
+      setNftUserBalance(currentNftBalance);
+    }
   // Update ref
     // if (nftBalanceOfUser !== undefined && nftBalanceOfUser?.data !== undefined) {
       // if (nftBalanceOfUser?.data !== undefined && nftUserBalance === null) {  
@@ -95,12 +94,12 @@ export default function Home() {
       // }
     setIsMounted(true);
 
-//     // Only fetch proposals when the tab changes or nftBalance changes
-//   if (selectedTab === "Ver Propuestas") {
-//     fetchAllProposals();
-//   }
-// }, [selectedTab, nftUserBalance]); // Dependency array
-// Fetch proposals when the tab changes or a proposal-related event occurs
+  //     // Only fetch proposals when the tab changes or nftBalance changes
+  //   if (selectedTab === "Ver Propuestas") {
+  //     fetchAllProposals();
+  //   }
+  // }, [selectedTab, nftUserBalance]); // Dependency array
+  // Fetch proposals when the tab changes or a proposal-related event occurs
     if (selectedTab === "Ver Propuestas") {
       fetchAllProposals();
     }
@@ -138,8 +137,6 @@ export default function Home() {
   }
 
   // Function to fetch a proposal by it's ID
-
-  //CORREGIR*********************
   async function fetchProposalById(id) {
     try {
       const proposal = await readContract({
@@ -148,6 +145,10 @@ export default function Home() {
         functionName: "proposals",
         args: [id],
       });
+
+      if (!proposal) {
+        throw new Error(`No se pudo obtener la propuesta con ID: ${id}`);
+      }
 
       const [deadline, yayVotes, nayVotes, executed, description] = proposal;
 
@@ -165,6 +166,7 @@ export default function Home() {
     } catch (error) {
       console.error(error);
       window.alert(error);
+      return null;
     }
   }
 
@@ -175,14 +177,19 @@ export default function Home() {
 
       for (let i = 0; i < numOfProposalsInDAO?.data; i++) {
         const proposal = await fetchProposalById(i);
-        proposals.push(proposal);
+        // proposals.push(proposal);
+        if (proposal) {
+          proposals.push(proposal);
+        } else {
+          console.warn(`Propuesta con ID ${i} no se pudo obtener y será omitida.`);
+        }
       }
 
       setProposals(proposals);
       return proposals;
     } catch (error) {
-      console.error(error);
-      window.alert(error);
+      console.error("Error al obtener todas las propuestas:", error);
+      window.alert(`Error al obtener propuestas: ${error.message}`);
     }
   }
 
@@ -300,7 +307,6 @@ export default function Home() {
 
   // Renders the 'View Proposals' tab content
   function renderViewProposalsTab() {
-    // console.log("ViewStyles",styles);
     const hasNft = nftUserBalance !== null && nftUserBalance > 0;
 
     if (loading) {
@@ -309,7 +315,7 @@ export default function Home() {
          <p>Cargando... Esperando a la transacción...</p> 
         </div>
       );
-    } else if (proposals.length === 0) {
+    } else if (proposals?.length === 0) {
       return (
         <div className={styles.description}>
           <p>No se han creado propuestas</p>
@@ -447,7 +453,6 @@ export default function Home() {
               </h3>
             </div>
             <div className={styles.description_info}>
-              {/*Falla esta clase primer_p y el id prueba, no la esta cogiendo*/}
               <p id="prueba" className={styles.primer_p}>
                 Eres poseedor de {nftBalanceOfUser?.data?.toString()}{" "}
                 SuperPioneros NFT{" "}
