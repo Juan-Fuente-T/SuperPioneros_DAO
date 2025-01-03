@@ -7,10 +7,9 @@ import { sepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains([sepolia], [publicProvider()]);
-
 const { connectors } = getDefaultWallets({
   appName: "SuperPioneros DAO",
-  projectId: "020d96200cf7abe2c330462149908c36",
+  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID,
   chains,
 });
 

@@ -26,7 +26,7 @@
   align-items: center;
   padding: 10%;
   min-height: 100vh;
-  width: 100%;
+  width: 50%;
 
   background-color: whitesmoke;
 }
@@ -86,7 +86,7 @@
   justify-content: center;
   /* text-align: center; */
   /* width: 100%; */
-  margin-bottom: 90px;
+  margin-bottom: 10px;
   margin: 50px;
 }
 
@@ -172,13 +172,13 @@
   border-radius: 6px;
   border: none;
 }
-.porposals_container {
+.proposals_container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-bottom: 120px;
 }
-.porposals {
+.proposals {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -213,8 +213,15 @@
 .container input {
   margin-bottom: 20px;
 }
-.container button,
-.withdraw_button {
+.withdraw_mint_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.withdraw_button, .mint_button, .create_button {
   width: 200px;
   padding: 10px;
   font-size: 0.9rem;
@@ -226,15 +233,24 @@
   border: solid 1px #006da6;
   border-radius: 5px;
 }
+.withdraw_button:hover, .mint_button:hover, .create_button:hover {
+  background: rgba(var(--card-rgb), 0.2);
+  scale: 1.03;
+}
+.withdraw_mint_container input{
+  /* width: 400px; */
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+}
 .container button:hover {
   background: rgba(var(--card-rgb), 0.2);
 }
 .description_input {
-  width: 300px;
-  height: 150px;
   border: solid 1px #006da6;
   border-radius: 5px;
   margin-bottom: 25px;
+  padding: 8px;
 }
 .description_input:placeholder-shown {
   padding: 12px;
@@ -243,10 +259,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
+  max-width: 50%;
   margin: auto;
   margin-top: 80px;
-  padding: 35px;
+  padding: 35px 10px;
   border: solid 1px #006da6;
   border-radius: 5px;
 }
@@ -340,7 +356,8 @@
   /* top: 5px; */
   /* width: 70%; */
   /* height: 30%; */
-  width: 100%;
+  width: 70%;
+  margin: auto;
   margin-bottom: 10px;
 }
 .initialLogo img {
@@ -377,7 +394,7 @@
   align-items: center;
   justify-content: center;
   align-content: center;
-  margin: 90px auto;
+  margin: 10px auto;
   max-width: 800px;
   /* padding: 10px; */
   font-weight: 600;
@@ -448,7 +465,10 @@
 .ext_container {
   margin: 10px;
 }
-
+.ext_container_connectButton{
+  display: flex;
+  justify-content: flex-end;
+}
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -497,6 +517,18 @@
   background: rgba(var(--card-rgb), 0.2);
   border: 1px solid rgba(var(--card-border-rgb), 0.25);
 }
+.loading{
+  width: 50%;
+  padding: 50px 10px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2d6685;
+  background: rgba(var(--card-rgb), 0.1);
+  border: solid 1px #006da6;
+  border-radius: 5px;
+  margin: auto;
+  text-align: center;
+}
 
 /* Mobile */
 @media (max-width: 700px) {
@@ -522,8 +554,13 @@
   }
 
   .withdraw_button_container {
-    max-width: 90%;
+    max-width: 95%;
   }
+  .withdraw_button_container input{
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
 
   .grid {
     grid-template-columns: 1fr;
@@ -592,11 +629,22 @@
     z-index: 1;
   }*/
 }
+@media (max-width: 1800px) {
+  .initialLogo {
+    width: 100%;
+  }
+}
 
 /* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
+@media (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+
+}
+@media (max-width: 700px) {
+  .title {
+    font-size: 2rem;
   }
 }
 
