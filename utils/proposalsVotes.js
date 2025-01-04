@@ -1,4 +1,3 @@
-import { usePublicClient, useAccount } from 'wagmi';
 import { parseAbiItem } from 'viem';
 import { SuperPionerosDAOAddress } from '../constants';
 
@@ -16,6 +15,11 @@ function saveVoteCache(cache) {
 export async function hasUserVotedInProposal(proposalId, address, publicClient) {
   const cacheKey = `${proposalId}-${address}`;
   const voteCache = getVoteCache();
+
+  // Si existe en caché y es positivo, retornar inmediatamente
+  if (voteCache[cacheKey] && voteCache[cacheKey].hasVoted) {
+    return true;
+  }
   try {
     const currentBlock = await publicClient.getBlockNumber();
     const oneMonthBlocksAgo = currentBlock - 216000n; // Aproximadamente 1 meses
@@ -39,6 +43,19 @@ export async function hasUserVotedInProposal(proposalId, address, publicClient) 
   } catch (error) {
     console.error("Error checking vote status:", error);
     return false;
+  }
+}
+// Función para limpiar una entrada específica de la caché de votos
+export function cleanSpecificVoteCache(proposalId, userAddress) {
+  const voteCache = getVoteCache();
+  const cacheKey = `${proposalId}-${userAddress}`;
+
+  if (voteCache[cacheKey]) {
+    delete voteCache[cacheKey];
+    saveVoteCache(voteCache);
+    // console.log(`Entrada de caché eliminada para propuesta ${proposalId} y usuario ${userAddress}`);
+  } else {
+    console.log(`No se encontró entrada de caché para propuesta ${proposalId} y usuario ${userAddress}`);
   }
 }
 

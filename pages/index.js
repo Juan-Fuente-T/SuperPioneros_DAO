@@ -4,7 +4,7 @@ import {
   SuperPionerosNFTABI,
   SuperPionerosNFTAddress,
 } from "@/constants";
-import { hasUserVotedInProposal } from "../utils/proposalsVotes";
+import { cleanSpecificVoteCache, hasUserVotedInProposal } from "../utils/proposalsVotes";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
@@ -43,7 +43,6 @@ export default function Home() {
   const [proposalExecuted, setProposalExecuted] = useState(false);
   const [addressToMint, setAddressToMint] = useState("");
   const publicClient = usePublicClient();
-
   // Fetch the owner of the DAO
   const daoOwner = useContractRead({
     abi: SuperPionerosDAOABI,
@@ -166,7 +165,6 @@ export default function Home() {
       return;
     }
     setLoading(true);
-    // console.log("Description proposal...", description);
     try {
       const { hash } = await writeContract({
         address: SuperPionerosDAOAddress,
@@ -265,6 +263,7 @@ export default function Home() {
 
       const [deadline, yayVotes, nayVotes, executed, description] = proposal;
       const hasVoted = await hasUserVotedInProposal(id, address, publicClient);
+      
       const parsedProposal = {
         proposalId: id,
         deadline: new Date(parseInt(deadline.toString()) * 1000),
@@ -274,7 +273,8 @@ export default function Home() {
         description: description.toString(),
         hasVoted: hasVoted,
       };
-
+      if(deadline < Date.now()) cleanSpecificVoteCache(id, address);
+      
       return parsedProposal;
     } catch (error) {
       console.error(error);
@@ -609,7 +609,7 @@ export default function Home() {
                 <p className={styles.proposalDetail}>Votos Si: {p.yayVotes}</p>
                 <p className={styles.proposalDetail}>Votos No: {p.nayVotes}</p>
                 {/* <p>Ejecutada?: {p.executed.toString()}</p>  */}
-                {p.deadline.getTime() > Date.now() && !p.executed ? (
+                {p.deadline > Date.now() && !p.executed ? (
                   <div className={styles.flex}>
                     <button
                       className={styles.button2}
@@ -624,7 +624,7 @@ export default function Home() {
                      {p.hasVoted ?  "Votado" : "Votar No"}
                     </button>
                   </div>
-                ) : p.deadline.getTime() < Date.now() && !p.executed ? (
+                ) : p.deadline  < Date.now() && !p.executed ? (
                   address && address?.toLowerCase() === daoOwner?.data?.toLowerCase() ? (
                     <div className={styles.flex}>
                       <button
@@ -697,6 +697,9 @@ export default function Home() {
       </Head>
 
       <main>
+      <div className={styles.ext_container_connectButton}>
+        <ConnectButton />
+        </div>
         <img id={styles.backgroundUp} src="./SuperPIoneros_fondoUp.png" />
         <div className={styles.initialLogo}>
           <img src="./SuperPionerosLogo.png" alt="SuperPionero's Community DAO logo" />
@@ -707,6 +710,7 @@ export default function Home() {
           <h1 className={styles.title}>
             Super Pioneros <br></br> DAO
           </h1>
+          <ConnectButton />
         </div>
 
         <div className={styles.image_container}>
