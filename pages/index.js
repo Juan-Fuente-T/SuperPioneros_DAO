@@ -7,7 +7,7 @@ import {
 import { hasUserVotedInProposal } from "../utils/proposalsVotes";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { formatEther } from "viem/utils";
 import { useAccount, useBalance, useContractRead, usePublicClient } from "wagmi";
 import { readContract, waitForTransaction, writeContract, simulateContract } from "wagmi/actions";
@@ -129,7 +129,6 @@ export default function Home() {
         throw waitError;
       }
       // Transaction confirmed successfully
-      setVoteCast(true);
       console.log('Mint confirmed:', hash);
       window.alert('Minted successfully!');
 
@@ -475,11 +474,9 @@ export default function Home() {
         }
         throw waitError;
       }
-      // Transaction confirmed successfully
-      setVoteCast(true);
+      // Transaction confirmed successfullyset
       console.log('Withdraw confirmed hash:', hash);
       window.alert('Withdraw successfully!');
-
     } catch (error) {
       console.error("Error withdrawing balance:", error);
       window.alert(`Error: ${error.message}` || "Error Withdrawing balance");
