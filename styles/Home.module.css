@@ -466,6 +466,7 @@
   margin: 10px;
 }
 .ext_container_connectButton{
+  margin: 10px;
   display: flex;
   justify-content: flex-end;
 }

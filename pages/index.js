@@ -681,7 +681,10 @@ export default function Home() {
           <h1 className={styles.initialTitle}>Super Pioneros DAO</h1>
           <p className={styles.initialText}>Conecta tu wallet</p>
           <img id={styles.backgroundUp2} src="./SuperPIoneros_fondoUp2.png" />
-          <ConnectButton />
+          {!isConnected && 
+          <div className={styles.ext_container_connectButton}>
+        <ConnectButton />
+        </div>}
         </div>
       </div>
     );
@@ -710,7 +713,7 @@ export default function Home() {
           <h1 className={styles.title}>
             Super Pioneros <br></br> DAO
           </h1>
-          <ConnectButton />
+          {!isConnected && <ConnectButton />}
         </div>
 
         <div className={styles.image_container}>
